@@ -1,0 +1,65 @@
+---
+title: "Mi primer documento en Quarto"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+Podemos escribir texto directamente en el editor. Y lo podemos formatear: **negrita**, *cursiva* y como `código.`
+
+También todo lo que ya saben de LaTex lo pueden ocupar acá.
+
+$$
+\begin{equation}\sigma^2 = \frac{\sum\limits_{i=1}^{n}(y_i – \bar{y})^2} {n – 1}\end{equation}
+$$
+
+Y puede agregar bloques de código
+
+```{r}
+#| message: false
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+desarrollo <- read_csv("https://raw.githubusercontent.com/rivaquiroga/datos-de-ejemplo/main/cl_2000-2019.csv")
+```
+
+Estos son datos sobre Chile para las variables población, pib per cápita y esperanza de vida entre los años 2000 y 2019.
+
+```{r}
+ggplot(desarrollo, aes(x = anio, y = pib)) +
+  geom_point() +
+  scale_y_continuous(limits = c(0, 15000))
+```
+
+Los datos del último año son los siguientes:
+
+```{r}
+desarrollo |> 
+  filter(anio == 2019) |>
+  select("Esperanza de vida" = esperanza_vida, pib, "Población" = poblacion) |> 
+  knitr::kable()
+   
+```
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
